@@ -5,6 +5,23 @@ import { User } from "../models/user.model";
 import { uploadOnCloudinary } from "../utils/cloundinary";
 import { ApiResponse } from "../utils/ApiResponse";
 
+const generateAccessAndRefresTokens = asyncHandler(async (userId) => {
+  try {
+    const user = await User.findById(userId);
+    const accessToken = user.generateAccessToken();
+    const refreshToken = user.generateRefreshToken();
+
+    user.refreshToken = refreshToken;
+    await user.save({ validateBeforeSave: false });
+    return { accessToken, refreshToken };
+  } catch (error) {
+    throw new ApiError(
+      500,
+      "Something went wrong while generating refresh and access token"
+    );
+  }
+});
+
 const registerUser = asyncHandler(async (req, res) => {
   const { email, username, password, fullName } = req.body;
 
@@ -101,4 +118,4 @@ const loginUser = asyncHandler(async (req, res) => {
     );
 });
 
-export { registerUser };
+export { registerUser, loginUser };
