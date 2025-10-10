@@ -1,8 +1,38 @@
+import { ApiError } from "../utils/ApiError";
 import { asyncHandler } from "../utils/asyncHandler";
+import { Like } from "../models/like.model";
 
 const toggleCommentLike = asyncHandler(async (req, res) => {
   const { commentId } = req.params;
   const userId = req.user?._id;
+
+  if (!commentId) {
+    throw new ApiError(404, "coment not found");
+  }
+
+  const existingLike = await getLikedTweets.findOne({
+    comment: commentId,
+    likedBy: userId,
+  });
+
+  if (existingLike) {
+    await existingLike.deleteOne();
+    return res.status(200).json({
+      success: true,
+      message: "Comment removed Like",
+    });
+  } else {
+    const newLike = await Like.create({
+      comment: commentId,
+      likedBy: userId,
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: "Comment liked",
+      like: newLike,
+    });
+  }
 });
 
 const toggleTweetLike = asyncHandler(async (req, res) => {});
