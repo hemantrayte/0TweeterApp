@@ -77,4 +77,6 @@ const deleteComment = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Comment deleted successfully"));
 });
 
+const getTweetComment = asyncHandler(async (req, res) => {});
+
 export { createComment, updateComment, deleteComment };
