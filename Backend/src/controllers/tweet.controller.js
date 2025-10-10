@@ -60,4 +60,30 @@ const updateTweet = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, tweet, "Tweet updated successfully"));
 });
 
+const deleteTweet = asyncHandler(async (req, res) => {
+  const userId = req.user?._id;
+  const { tweetId } = req.params;
+
+  if (!userId) {
+    throw new ApiError(404, "User Not found");
+  }
+
+  if (!tweetId) {
+    throw new ApiError(404, "Tweet not found");
+  }
+
+  const tweet = await Tweet.findOneAndDelete({
+    _id: tweetId,
+    owner: userId,
+  });
+
+  if (!tweet) {
+    throw new ApiError(404, "Tweet not found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Tweet deleted successfully"));
+});
+
 export { createTweet, updateTweet };
