@@ -52,7 +52,7 @@ const updateTweet = asyncHandler(async (req, res) => {
   );
 
   if (!tweet) {
-    throw new ApiError(404, "Comment not found");
+    throw new ApiError(404, "Tweet not found");
   }
 
   return res
