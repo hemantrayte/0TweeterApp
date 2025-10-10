@@ -86,4 +86,17 @@ const deleteTweet = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Tweet deleted successfully"));
 });
 
-export { createTweet, updateTweet };
+const allTweet = asyncHandler(async (req, res) => {
+  const userId = req.user?._id;
+
+  if (!userId) {
+    throw new ApiError(400, "User Id is required");
+  }
+  const tweet = await Tweet.find({})
+    .populate("owner", "username fullName avatar")
+    .sort({ createdAt: -1 });
+
+  return res.status(200).json(new ApiResponse(200, tweet, "All Tweets"));
+});
+
+export { createTweet, updateTweet, deleteTweet, allTweet };
