@@ -35,6 +35,34 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
   }
 });
 
-const toggleTweetLike = asyncHandler(async (req, res) => {});
+const toggleTweetLike = asyncHandler(async (req, res) => {
+  const { tweetId } = req.params;
+  const userId = req.user?._id;
+
+  if (!tweetId) {
+    throw new ApiError(404, "tweet not found");
+  }
+
+  const existingLike = await Like.findOne({
+    tweet: tweetId,
+    likedBy: userId,
+  });
+
+  if (existingLike) {
+    await existingLike.deleteOne();
+    return res.status(200).json(new ApiResponse(200, "Tweet Like removed"));
+  } else {
+    const newLike = await Like.create({
+      tweet: tweetId,
+      likedBy: userId,
+    });
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, { like: newLike }, "Tweet Liked"));
+  }
+});
 
 const getLikedTweets = asyncHandler(async (req, res) => {});
+
+export { toggleCommentLike, getLikedTweets, toggleTweetLike };
