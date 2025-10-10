@@ -1,4 +1,6 @@
 import { Comment } from "../models/comment.model";
+import { ApiError } from "../utils/ApiError";
+import { ApiResponse } from "../utils/ApiResponse";
 import { asyncHandler } from "../utils/asyncHandler";
 
 const createComment = asyncHandler(async (req, res) => {
@@ -53,4 +55,26 @@ const updateComment = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, comment, "Comment updated successfully"));
 });
 
-export { createComment, updateComment };
+const deleteComment = asyncHandler(async (req, res) => {
+  const userId = req.user?._id;
+  const { commentId } = req.params;
+
+  if (!commentId) {
+    throw new ApiError(400, "Comment Id is required");
+  }
+
+  const comment = await Comment.findOneAndDelete({
+    _id: commentId,
+    owner: userId,
+  });
+
+  if (!comment) {
+    throw new ApiError(404, "Comment not found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Comment deleted successfully"));
+});
+
+export { createComment, updateComment, deleteComment };
