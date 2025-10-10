@@ -99,4 +99,20 @@ const allTweet = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, tweet, "All Tweets"));
 });
 
-export { createTweet, updateTweet, deleteTweet, allTweet };
+const userTweets = asyncHandler(async (req, res) => {
+  const userId = req.user?._id;
+
+  if (!userId) {
+    throw new ApiError(400, "User Id is required");
+  }
+
+  const tweets = await Tweet.find({ owner: userId })
+    .populate("owner", "username fullName avatar") // replace 'user' with your actual field name in Tweet schema
+    .sort({ createdAt: -1 }); // optional: latest tweets first
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, tweets, "Tweet fetched successfully"));
+});
+
+export { createTweet, updateTweet, deleteTweet, allTweet, userTweets };
