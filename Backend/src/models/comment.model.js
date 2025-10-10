@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const commentSchema = new Schema(
   {
-    constent: {
+    content: {
       type: String,
       required: true,
     },
