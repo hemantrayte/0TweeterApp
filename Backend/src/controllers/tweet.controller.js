@@ -32,4 +32,32 @@ const createTweet = asyncHandler(async (req, res) => {
   return res.status(201).json(new ApiResponse(200, tweet, "Create tweet"));
 });
 
-export { createTweet };
+const updateTweet = asyncHandler(async (req, res) => {
+  const { content } = req.body;
+  const userId = req.user._id;
+  const { tweetId } = req.params;
+
+  if (!content) {
+    throw new ApiError(400, "Content is required");
+  }
+
+  if (!tweetId) {
+    throw new ApiError(404, "Tweet id is required");
+  }
+
+  const tweet = await Tweet.findOneAndUpdate(
+    { _id: tweetId, owner: userId },
+    { $set: { content: content } },
+    { new: true }
+  );
+
+  if (!tweet) {
+    throw new ApiError(404, "Comment not found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, tweet, "Tweet updated successfully"));
+});
+
+export { createTweet, updateTweet };
