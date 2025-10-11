@@ -63,6 +63,32 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
   }
 });
 
-const getLikedTweets = asyncHandler(async (req, res) => {});
+const getLikedTweets = asyncHandler(async (req, res) => {
+  const userId = req.user?._id;
+
+  if (!userId) {
+    throw new ApiError(401, "Unauthorized request, user not found");
+  }
+
+  const likedTweets = await Like.find({
+    likedBy: userId,
+    tweet: { $ne: null }, //only tweet likes
+  })
+    .populate({
+      path: "tweet",
+      select: "content createdAt",
+      populate: {
+        path: "owner",
+        select: "fullName username avatar",
+      },
+    })
+    .sort({ createdAt: -1 });
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, likedTweets, "Liked videos fetched successfully")
+    );
+});
 
 export { toggleCommentLike, getLikedTweets, toggleTweetLike };
