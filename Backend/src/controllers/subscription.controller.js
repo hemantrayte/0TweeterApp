@@ -59,4 +59,18 @@ const getFollowers = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, followers, "Followers fetched successfully"));
 });
 
-export { followUser, unfollowUser, getFollowers };
+const getFollowing = asyncHandler(async (req, res) => {
+  const { userId } = req.params;
+
+  const following = await Subscription.find({ follower: userId })
+    .populate("profile", "name email avatar")
+    .lean();
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, following, "Following list fetched successfully")
+    );
+});
+
+export { followUser, unfollowUser, getFollowers, getFollowing };
