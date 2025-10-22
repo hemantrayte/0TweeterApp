@@ -3,6 +3,7 @@ import { VerifyJwt } from "../middlewares/auth.middleware";
 import {
   createComment,
   deleteComment,
+  getTweetComment,
   updateComment,
 } from "../controllers/comment.controller";
 
@@ -12,5 +13,6 @@ router.use(VerifyJwt);
 router.route("/:tweetId").post(createComment);
 router.route("/c/:commentId").patch(updateComment);
 router.route("/c/:commentId").delete(deleteComment);
+router.get("/:tweetId/comments", getTweetComment);
 
 export default router;

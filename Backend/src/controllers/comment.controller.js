@@ -77,6 +77,23 @@ const deleteComment = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Comment deleted successfully"));
 });
 
-const getTweetComment = asyncHandler(async (req, res) => {});
+const getTweetComment = asyncHandler(async (req, res) => {
+  const { tweetId } = req.params;
 
-export { createComment, updateComment, deleteComment };
+  // Check if tweet exists
+  const tweet = await Tweet.findById(tweetId);
+  if (!tweet) {
+    throw new ApiError(404, "Tweet not found");
+  }
+
+  // Get all comments for this tweet
+  const comments = await Comment.find({ tweet: tweetId })
+    .populate("author", "name avatar") // populate author info
+    .sort({ createdAt: -1 }); // latest comments first
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, comments, "Comments fetched successfully"));
+});
+
+export { createComment, updateComment, deleteComment, getTweetComment };
