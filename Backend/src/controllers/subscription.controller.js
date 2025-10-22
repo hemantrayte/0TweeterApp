@@ -1,3 +1,4 @@
+import { Subscription } from "../models/followers.model";
 import { asyncHandler } from "../utils/asyncHandler";
 
 const followUser = asyncHandler(async (req, res) => {
@@ -46,4 +47,16 @@ const unfollowUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "User unfollowed successfully"));
 });
 
-export { followUser, unfollowUser };
+const getFollowers = asyncHandler(async (req, res) => {
+  const { userId } = req.params;
+
+  const followers = await Subscription.find({ profile: userId })
+    .populate("follower", "name email avatar")
+    .lean();
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, followers, "Followers fetched successfully"));
+});
+
+export { followUser, unfollowUser, getFollowers };
