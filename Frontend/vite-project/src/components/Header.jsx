@@ -20,11 +20,8 @@ const Header = ({
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-4">
-            <Link to={"/"} className="flex items-center gap-3 select-none">
-              <div
-                to={"/"}
-                className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold"
-              >
+            <Link to="/" className="flex items-center gap-3 select-none">
+              <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
                 T
               </div>
               <span className="hidden sm:inline font-semibold text-lg">
@@ -33,9 +30,9 @@ const Header = ({
             </Link>
 
             <nav className="hidden md:flex items-center gap-2 text-sm text-gray-600">
-              <a href="/home" className="px-3 py-1 rounded hover:bg-gray-100">
+              <Link to="/" className="px-3 py-1 rounded hover:bg-gray-100">
                 Home
-              </a>
+              </Link>
               <a
                 href="/explore"
                 className="px-3 py-1 rounded hover:bg-gray-100"
@@ -151,12 +148,12 @@ const Header = ({
 
                 {open && (
                   <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg py-1">
-                    <a
-                      href="/profile"
+                    <Link
+                      to="/user/current-user"
                       className="block px-3 py-2 text-sm hover:bg-gray-50"
                     >
                       Profile
-                    </a>
+                    </Link>
                     <button
                       onClick={onLogout}
                       className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50"
@@ -168,18 +165,18 @@ const Header = ({
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <a
-                  href="/login"
+                <Link
+                  to="/login"
                   className="px-3 py-1 rounded-full border border-gray-200 text-sm hover:bg-gray-50"
                 >
                   Log in
-                </a>
-                <a
-                  href="/signup"
+                </Link>
+                <Link
+                  to="/signup"
                   className="px-3 py-1 rounded-full bg-blue-500 text-white text-sm"
                 >
                   Sign up
-                </a>
+                </Link>
               </div>
             )}
           </div>
