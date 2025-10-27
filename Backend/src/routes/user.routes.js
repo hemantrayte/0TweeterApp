@@ -19,6 +19,8 @@ router.route("/login").post(loginUser);
 router.route("/logout").post(VerifyJwt, logoutUser);
 router.route("/update-user").patch(VerifyJwt, updateUserDetails);
 router.route("/update-user/password").patch(VerifyJwt, changeCurrentPassword);
-router.route("/update-user/avatar").patch(VerifyJwt, updateUserAvatar);
+router
+  .route("/update-user/avatar")
+  .patch(VerifyJwt, upload.single("avatar"), updateUserAvatar);
 
 export default router;
