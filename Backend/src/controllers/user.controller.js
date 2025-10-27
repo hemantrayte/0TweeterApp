@@ -30,20 +30,21 @@ const registerUser = asyncHandler(async (req, res) => {
 
   const existedUser = await User.findOne({ $or: [{ username }, { email }] });
 
-  if (!existedUser) {
-    throw new ApiError(401, "Email or username already exist");
+  if (existedUser) {
+    throw new ApiError(409, "Email or username already exists");
   }
 
-  const avatarLocalPath = req.files?.avatar?.[0]?.path;
+  // ✅ For upload.single("avatar")
+  const avatarLocalPath = req.file?.path;
 
   if (!avatarLocalPath) {
-    throw new ApiError(400, "avatar file is required");
+    throw new ApiError(400, "Avatar file is required");
   }
 
   const avatar = await uploadOnCloudinary(avatarLocalPath);
 
   if (!avatar) {
-    throw new ApiError(400, "Avatar file is required");
+    throw new ApiError(400, "Failed to upload avatar");
   }
 
   const user = await User.create({
@@ -51,7 +52,6 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password,
     avatar: avatar.url,
-    password,
     username: username.toLowerCase(),
   });
 
@@ -60,12 +60,12 @@ const registerUser = asyncHandler(async (req, res) => {
   );
 
   if (!createdUser) {
-    throw new ApiError(500, "Somthing went wrong while register the user");
+    throw new ApiError(500, "Something went wrong while registering the user");
   }
 
   return res
     .status(201)
-    .json(new ApiResponse(200, createdUser, "User Register Successfully"));
+    .json(new ApiResponse(200, createdUser, "User registered successfully"));
 });
 
 const loginUser = asyncHandler(async (req, res) => {
@@ -76,14 +76,22 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 
   const user = await User.findOne({
-    $or: [{ email, username }],
+    $or: [{ email }, { username }],
   });
 
+  console.log("🔍 Login attempt:", { email, username });
+  console.log("🧑 Found user:", user ? user.email : "❌ Not found");
+
   if (!user) {
-    throw new ApiError(404, "User Not Found");
+    throw new ApiError(404, "User not found");
   }
 
+  // 👇 log for debugging
+  console.log("🔐 Stored password (hashed):", user.password);
+  console.log("🧩 Input password:", password);
+
   const isPasswordValid = await user.isPasswordCorrect(password);
+  console.log("✅ Password valid?", isPasswordValid);
 
   if (!isPasswordValid) {
     throw new ApiError(401, "Invalid user credentials");

@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
       index: true,
     },
     avatar: {
-      type: String, ///cloudinary url
+      type: String, // cloudinary url
       required: true,
     },
     password: {
@@ -47,9 +47,10 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.methods.isPasswordCorrect = async function (password) {
-  return await bcrypt.compare(this.password, password);
+  return await bcrypt.compare(password, this.password);
 };
 
+// ✅ Generate JWT access token
 userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     {
@@ -65,6 +66,7 @@ userSchema.methods.generateAccessToken = function () {
   );
 };
 
+// ✅ Generate JWT refresh token
 userSchema.methods.generateRefreshToken = function () {
   return jwt.sign(
     {

@@ -12,14 +12,6 @@ cloudinary.config({
   secure: true,
 });
 
-// console.log("Cloudinary ENV Test:", {
-//   CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
-//   CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
-//   CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET
-//     ? "✅ exists"
-//     : "❌ missing",
-// });
-
 // ✅ Force check config
 console.log("Cloudinary Current Config:", cloudinary.config());
 
