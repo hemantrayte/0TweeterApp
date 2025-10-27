@@ -1,5 +1,5 @@
-import { Subscription } from "../models/followers.model";
-import { asyncHandler } from "../utils/asyncHandler";
+import { Subscription } from "../models/followers.model.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 const followUser = asyncHandler(async (req, res) => {
   const followerId = req.user._id;
