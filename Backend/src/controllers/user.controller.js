@@ -79,19 +79,19 @@ const loginUser = asyncHandler(async (req, res) => {
     $or: [{ email }, { username }],
   });
 
-  console.log("🔍 Login attempt:", { email, username });
-  console.log("🧑 Found user:", user ? user.email : "❌ Not found");
+  // console.log("🔍 Login attempt:", { email, username });
+  // console.log("🧑 Found user:", user ? user.email : "❌ Not found");
 
   if (!user) {
     throw new ApiError(404, "User not found");
   }
 
   // 👇 log for debugging
-  console.log("🔐 Stored password (hashed):", user.password);
-  console.log("🧩 Input password:", password);
+  // console.log("🔐 Stored password (hashed):", user.password);
+  // console.log("🧩 Input password:", password);
 
   const isPasswordValid = await user.isPasswordCorrect(password);
-  console.log("✅ Password valid?", isPasswordValid);
+  // console.log("✅ Password valid?", isPasswordValid);
 
   if (!isPasswordValid) {
     throw new ApiError(401, "Invalid user credentials");
