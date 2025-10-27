@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import api from "../../Api/api";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [userData, setUserData] = useState({
@@ -8,7 +10,10 @@ const Signup = () => {
     fullName: "",
   });
 
+  const navigate = useNavigate();
+
   const [avatar, setAvatar] = useState(null);
+  const [message, setMessage] = useState("");
 
   const handleInputeChange = (e) => {
     setUserData({
@@ -19,11 +24,41 @@ const Signup = () => {
 
   const handleFileChange = (e) => {
     if (e.target.name === "avatar") {
-      setAvatar(e.target.file[0]);
+      setAvatar(e.target.files[0]);
     }
   };
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const data = new FormData();
+      data.append("fullName", userData.fullName);
+      data.append("email", userData.email);
+      data.append("password", userData.password);
+      data.append("username", userData.username);
+      if (avatar) data.append("avatar", avatar);
+
+      const res = await api.post("/users/register", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      setMessage(res.data.message || "User registered successfully!");
+
+      console.log("User registered successfully!");
+
+      setUserData({
+        fullName: "",
+        email: "",
+        username: "",
+        password: "",
+      });
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+      setMessage(error.response?.data?.message || "Something went wrong");
+    }
+  };
 
   return (
     <div>
@@ -67,6 +102,7 @@ const Signup = () => {
             required
           />
         </div>
+        <button type="submit">Submit</button>
       </form>
     </div>
   );
