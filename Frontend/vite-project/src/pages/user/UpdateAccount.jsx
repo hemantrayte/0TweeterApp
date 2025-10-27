@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../../Api/api";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaUserEdit, FaCamera, FaLock } from "react-icons/fa";
 
 const UpdateAccount = () => {
   const [userData, setUserData] = useState({
@@ -45,9 +45,7 @@ const UpdateAccount = () => {
         text: res.data.message || "User updated successfully!",
       });
 
-      setTimeout(() => {
-        navigate("/user/current-user");
-      }, 1500);
+      setTimeout(() => navigate("/user/current-user"), 1500);
     } catch (error) {
       setMessage({
         type: "error",
@@ -63,81 +61,77 @@ const UpdateAccount = () => {
   }, []);
 
   return (
-    <div className="max-w-xl mx-auto min-h-screen bg-black text-white border-x border-gray-800">
-      {/* Header */}
-      <div className="flex items-center p-4 border-b border-gray-800 sticky top-0 bg-black/80 backdrop-blur">
-        <button
-          onClick={() => navigate(-1)}
-          className="mr-4 text-gray-400 hover:text-white"
-        >
-          <FaArrowLeft size={18} />
-        </button>
-        <h2 className="text-xl font-bold">Edit Profile</h2>
-      </div>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-black transition-colors duration-300">
+      <div className="w-full max-w-md bg-white dark:bg-gray-900 shadow-lg rounded-2xl p-8 border border-gray-100 dark:border-gray-700 transition-colors duration-300">
+        <h1 className="text-2xl font-semibold text-gray-800 dark:text-white text-center mb-6 flex items-center justify-center gap-2">
+          <FaUserEdit className="text-blue-500" /> Edit Profile
+        </h1>
 
-      {/* Form */}
-      <form onSubmit={handleSubmit} className="px-6 py-6 space-y-6">
-        <div>
-          <label className="block text-sm text-gray-400 mb-1">Full Name</label>
-          <input
-            type="text"
-            name="fullName"
-            value={userData.fullName}
-            onChange={handleInputChange}
-            className="w-full bg-transparent border border-gray-700 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
-            placeholder="Enter full name"
-          />
-        </div>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2">
+              Full Name
+            </label>
+            <input
+              type="text"
+              name="fullName"
+              value={userData.fullName}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Enter your full name"
+            />
+          </div>
 
-        <div>
-          <label className="block text-sm text-gray-400 mb-1">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={userData.email}
-            onChange={handleInputChange}
-            className="w-full bg-transparent border border-gray-700 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
-            placeholder="Enter email"
-          />
-        </div>
+          <div>
+            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2">
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={userData.email}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Enter your email"
+            />
+          </div>
 
-        {/* Buttons */}
-        <div className="flex flex-col gap-3 mt-8">
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-full transition"
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl font-semibold transition"
           >
             Save Changes
           </button>
+        </form>
 
-          <button
-            onClick={() => navigate("/user/update/avatar")}
-            type="button"
-            className="border border-gray-600 text-gray-300 hover:bg-gray-800 py-2 rounded-full transition"
-          >
-            Update Avatar
-          </button>
-
-          <button
-            onClick={() => navigate("/user/update/password")}
-            type="button"
-            className="border border-gray-600 text-gray-300 hover:bg-gray-800 py-2 rounded-full transition"
-          >
-            Change Password
-          </button>
-        </div>
-
-        {/* Message */}
         {message.text && (
           <p
-            className={`text-center mt-4 ${
-              message.type === "success" ? "text-green-500" : "text-red-500"
+            className={`mt-4 text-center font-medium ${
+              message.type === "error"
+                ? "text-red-500"
+                : "text-green-500 dark:text-green-400"
             }`}
           >
             {message.text}
           </p>
         )}
-      </form>
+
+        <div className="mt-6 flex flex-col gap-3">
+          <button
+            onClick={() => navigate("/user/update/avatar")}
+            className="flex items-center justify-center gap-2 w-full border border-gray-300 dark:border-gray-700 py-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+          >
+            <FaCamera className="text-blue-500" /> Update Avatar
+          </button>
+
+          <button
+            onClick={() => navigate("/user/update/password")}
+            className="flex items-center justify-center gap-2 w-full border border-gray-300 dark:border-gray-700 py-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+          >
+            <FaLock className="text-blue-500" /> Change Password
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
