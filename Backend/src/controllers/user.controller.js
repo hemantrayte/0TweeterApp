@@ -4,7 +4,7 @@ import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloundinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
-const generateAccessAndRefresTokens = asyncHandler(async (userId) => {
+const generateAccessAndRefresTokens = async (userId) => {
   try {
     const user = await User.findById(userId);
     const accessToken = user.generateAccessToken();
@@ -19,7 +19,7 @@ const generateAccessAndRefresTokens = asyncHandler(async (userId) => {
       "Something went wrong while generating refresh and access token"
     );
   }
-});
+};
 
 const registerUser = asyncHandler(async (req, res) => {
   const { email, username, password, fullName } = req.body;
