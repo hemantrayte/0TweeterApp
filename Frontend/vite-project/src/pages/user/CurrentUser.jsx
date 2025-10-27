@@ -9,7 +9,7 @@ const CurrentUser = () => {
 
   const fetchCurrentUser = async () => {
     try {
-      const res = await api.get("users/current-user");
+      const res = await api.get("/users/current-user");
       setCurrentUser(res.data.data);
     } catch (error) {
       console.log("User not fetched", error);
