@@ -12,6 +12,6 @@ router.use(VerifyJwt);
 router.route("/toggle/t/:tweetId").post(toggleTweetLike);
 router.route("/toggle/c/:commentId").post(toggleCommentLike);
 
-router.get(getLikedTweets);
+router.route("/liketweets").get(getLikedTweets);
 
 export default router;
