@@ -38,7 +38,7 @@ const router = createBrowserRouter([
         element: <Logout />,
       },
       {
-        path: "user",
+        path: "current-user",
         element: <CurrentUser />,
       },
       {
