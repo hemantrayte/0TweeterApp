@@ -1,6 +1,6 @@
-import { ApiError } from "../utils/ApiError";
-import { asyncHandler } from "../utils/asyncHandler";
-import { Like } from "../models/like.model";
+import { ApiError } from "../utils/ApiError.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { Like } from "../models/like.model.js";
 
 const toggleCommentLike = asyncHandler(async (req, res) => {
   const { commentId } = req.params;
