@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-white border-t border-gray-200 mt-10">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between text-sm text-gray-600">
+    <footer className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 z-50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between text-sm text-gray-600">
         {/* Left Section */}
         <div className="flex items-center gap-2 mb-3 sm:mb-0">
           <div className="w-8 h-8 bg-blue-500 text-white flex items-center justify-center rounded-full font-bold">
