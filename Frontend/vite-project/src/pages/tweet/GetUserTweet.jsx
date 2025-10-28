@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import api from "../../Api/api";
 import { Link } from "react-router-dom";
 
-const GetUserTweet = ({ id }) => {
+const GetUserTweet = ({ userId }) => {
   const [userTweet, setUserTweet] = useState([]);
 
   const userTweets = async () => {
     try {
-      const res = await api.get(`/tweets/${id}`);
+      const res = await api.get(`/tweets/user/${userId}`);
       console.log(res.data.data);
       setUserTweet(res.data.data);
     } catch (error) {

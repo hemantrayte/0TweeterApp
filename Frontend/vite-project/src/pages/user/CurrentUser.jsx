@@ -223,7 +223,7 @@ const CurrentUser = () => {
       {/* Tweets Section (Placeholder) */}
       <div className="px-6 sm:px-12 lg:px-24 xl:px-48 py-10">
         <div className="text-center text-gray-500 text-sm">
-          <GetUserTweet id={currentUser._id} />
+          <GetUserTweet userId={currentUser._id} />
         </div>
       </div>
     </div>

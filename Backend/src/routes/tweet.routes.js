@@ -18,8 +18,8 @@ router
   .route("/create")
   .post(upload.fields([{ name: "image", maxCount: 2 }]), createTweet);
 router.route("/").get(allTweet);
-router.route("/:tweetId").get(getTweetById);
-router.route("/:userId").get(userTweets);
+router.route("/id/:tweetId").get(getTweetById);
+router.route("/user/:userId").get(userTweets);
 router.route("/:tweetId").patch(updateTweet);
 router.route("/:tweetId").delete(deleteTweet);
 
