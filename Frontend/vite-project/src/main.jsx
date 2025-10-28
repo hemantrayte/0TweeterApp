@@ -20,6 +20,7 @@ import CreateTweet from "./pages/tweet/CreateTweet.jsx";
 import GetUserTweet from "./pages/tweet/GetUserTweet.jsx";
 import UpdateTweet from "./pages/tweet/UpdateTweet.jsx";
 import DeleteTweet from "./pages/tweet/DeleteTweet.jsx";
+import SingleTweet from "./pages/tweet/SingleTweet.jsx";
 
 const router = createBrowserRouter([
   {
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
       {
         path: "tweet",
         element: <AllTweets />,
+      },
+      {
+        path: "tweet/:tweetId",
+        element: <SingleTweet />,
       },
       {
         path: "tweet/create",
