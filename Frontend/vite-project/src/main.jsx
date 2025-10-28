@@ -21,6 +21,11 @@ import GetUserTweet from "./pages/tweet/GetUserTweet.jsx";
 import UpdateTweet from "./pages/tweet/UpdateTweet.jsx";
 import DeleteTweet from "./pages/tweet/DeleteTweet.jsx";
 import SingleTweet from "./pages/tweet/SingleTweet.jsx";
+import AllComments from "./pages/comments/AllComments.jsx";
+import CreateComment from "./pages/comments/CreateComment.jsx";
+import UpdateComment from "./pages/comments/UpdateComment.jsx";
+import TweetComments from "./pages/comments/TweetComments.jsx";
+import DeleteComment from "./pages/comments/DeleteComment.jsx";
 
 const router = createBrowserRouter([
   {
@@ -88,9 +93,21 @@ const router = createBrowserRouter([
 
       //comments
       {
-        path: "comment",
-        element: 
-      }
+        path: "comment/:tweetId",
+        element: <TweetComments />,
+      },
+      {
+        path: "comment/create",
+        element: <CreateComment />,
+      },
+      {
+        path: "comment/update/:commentId",
+        element: <UpdateComment />,
+      },
+      {
+        path: "comment/delete/:commentId",
+        element: <DeleteComment />,
+      },
     ],
   },
 ]);
