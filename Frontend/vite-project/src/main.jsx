@@ -85,6 +85,12 @@ const router = createBrowserRouter([
         path: "tweet/delete/:tweetId",
         element: <DeleteTweet />,
       },
+
+      //comments
+      {
+        path: "comment",
+        element: 
+      }
     ],
   },
 ]);
