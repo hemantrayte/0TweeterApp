@@ -17,8 +17,8 @@ router
   .route("/create")
   .post(upload.fields([{ name: "image", maxCount: 2 }]), createTweet);
 router.route("/").get(allTweet);
-router.route("/user/:userId").get(userTweets);
+router.route("/:userId").get(userTweets);
 router.route("/:tweetId").patch(updateTweet);
-router.route("/:tweetId").patch(deleteTweet);
+router.route("/:tweetId").delete(deleteTweet);
 
 export default router;
