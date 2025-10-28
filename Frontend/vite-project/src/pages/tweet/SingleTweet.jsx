@@ -8,7 +8,7 @@ const SingleTweet = () => {
 
   const fetchSingleTweet = async() => {
     try {
-      const res = await
+      const res = await 
     } catch (error) {
       console.log(error)
     }
