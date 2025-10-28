@@ -2,34 +2,38 @@ import { Tweet } from "../models/tweet.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { uploadOnCloudinary } from "../utils/cloundinary.js";
 
 const createTweet = asyncHandler(async (req, res) => {
   const { content } = req.body;
   const userId = req.user._id;
 
   if (!content) {
-    throw new ApiError(400, "All fileds are required");
+    throw new ApiError(400, "Content is required");
   }
 
-  const imageLocalPath = req.files?.avatar?.[0]?.path;
+  // Assuming your image upload field name is 'image'
+  const imageLocalPath = req.files?.image?.[0]?.path;
 
   if (!imageLocalPath) {
-    throw new ApiError(400, "avatar file is required");
+    throw new ApiError(400, "Tweet image is required");
   }
 
   const image = await uploadOnCloudinary(imageLocalPath);
 
-  if (!image) {
-    throw new ApiError(400, "Avatar file is required");
+  if (!image || !image.url) {
+    throw new ApiError(400, "Image upload failed");
   }
 
   const tweet = await Tweet.create({
-    content: content,
+    content,
     image: image.url,
     owner: userId,
   });
 
-  return res.status(201).json(new ApiResponse(200, tweet, "Create tweet"));
+  return res
+    .status(201)
+    .json(new ApiResponse(201, tweet, "Tweet created successfully"));
 });
 
 const updateTweet = asyncHandler(async (req, res) => {
