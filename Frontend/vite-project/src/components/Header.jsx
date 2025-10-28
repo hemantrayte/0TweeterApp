@@ -81,8 +81,8 @@ const Header = ({
           </div>
 
           <div className="flex items-center gap-3">
-            <button
-              onClick={onNewTweet}
+            <Link
+              to={"/tweet/create"}
               className="hidden sm:inline-flex items-center gap-2 bg-blue-500 text-white px-3 py-1.5 rounded-full text-sm font-medium shadow-sm hover:brightness-95"
             >
               <svg
@@ -100,7 +100,7 @@ const Header = ({
                 />
               </svg>
               New
-            </button>
+            </Link>
 
             <button
               onClick={onNewTweet}

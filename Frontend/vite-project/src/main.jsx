@@ -15,6 +15,11 @@ import CurrentUser from "./pages/user/CurrentUser.jsx";
 import UpdateAccount from "./pages/user/UpdateAccount.jsx";
 import UpdateAvatar from "./pages/user/UpdateAvatar.jsx";
 import ChangePassword from "./pages/user/ChangePassword.jsx";
+import AllTweets from "./pages/tweet/AllTweets.jsx";
+import CreateTweet from "./pages/tweet/CreateTweet.jsx";
+import GetUserTweet from "./pages/tweet/GetUserTweet.jsx";
+import UpdateTweet from "./pages/tweet/UpdateTweet.jsx";
+import DeleteTweet from "./pages/tweet/DeleteTweet.jsx";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +57,28 @@ const router = createBrowserRouter([
       {
         path: "user/update/password",
         element: <ChangePassword />,
+      },
+
+      //tweets routes
+      {
+        path: "tweet",
+        element: <AllTweets />,
+      },
+      {
+        path: "tweet/create",
+        element: <CreateTweet />,
+      },
+      {
+        path: "tweet/:userId",
+        element: <GetUserTweet />,
+      },
+      {
+        path: "tweet/update/:tweetId",
+        element: <UpdateTweet />,
+      },
+      {
+        path: "tweet/delete/:tweetId",
+        element: <DeleteTweet />,
       },
     ],
   },
