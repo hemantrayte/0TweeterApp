@@ -26,6 +26,7 @@ import CreateComment from "./pages/comments/CreateComment.jsx";
 import UpdateComment from "./pages/comments/UpdateComment.jsx";
 import TweetComments from "./pages/comments/TweetComments.jsx";
 import DeleteComment from "./pages/comments/DeleteComment.jsx";
+import SingleComment from "./pages/comments/SingleComment.jsx";
 
 const router = createBrowserRouter([
   {

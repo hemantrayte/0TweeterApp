@@ -98,4 +98,31 @@ const getTweetComment = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, comments, "Comments fetched successfully"));
 });
 
-export { createComment, updateComment, deleteComment, getTweetComment };
+const getCommentById = asyncHandler(async (req, res) => {
+  const { commentId } = req.params;
+
+  if (!commentId) {
+    throw new ApiError(400, "Comment ID is required");
+  }
+
+  const comment = await Comment.findById(commentId)
+    .populate("owner", "username avatar fullName")
+    .populate("tweet", "content createdAt")
+    .lean();
+
+  if (!comment) {
+    throw new ApiError(404, "Comment not found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, comment, "Comment fetched successfully"));
+});
+
+export {
+  createComment,
+  updateComment,
+  deleteComment,
+  getTweetComment,
+  getCommentById,
+};
