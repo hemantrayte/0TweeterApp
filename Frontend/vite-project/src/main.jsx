@@ -102,7 +102,7 @@ const router = createBrowserRouter([
         element: <CreateComment />,
       },
       {
-        path: "comment/commentId",
+        path: "comment/c/:commentId",
         element: <SingleComment />,
       },
       {

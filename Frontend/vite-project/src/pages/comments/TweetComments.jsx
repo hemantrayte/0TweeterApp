@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../../Api/api";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaRegComment } from "react-icons/fa";
 
 const TweetComments = ({ tweetId }) => {
@@ -45,7 +45,8 @@ const TweetComments = ({ tweetId }) => {
           </p>
         ) : (
           comments.map((comment) => (
-            <div
+            <Link
+              to={`/comment/c/${comment._id}`}
               key={comment._id}
               className="flex items-start gap-3 p-4 border-b border-gray-800 hover:bg-gray-900/50 transition"
             >
@@ -73,7 +74,7 @@ const TweetComments = ({ tweetId }) => {
 
                 <p className="mt-1 text-gray-200">{comment.content}</p>
               </div>
-            </div>
+            </Link>
           ))
         )}
       </div>

@@ -14,7 +14,7 @@ router.use(VerifyJwt);
 router.route("/:tweetId").post(createComment);
 router.route("/c/:commentId").patch(updateComment);
 router.route("/c/:commentId").delete(deleteComment);
-router.route("/c/commentId").get(getCommentById);
+router.route("/c/:commentId").get(getCommentById);
 router.get("/comments/:tweetId", getTweetComment);
 
 export default router;
