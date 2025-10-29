@@ -6,6 +6,7 @@ import { FaRegComment } from "react-icons/fa";
 const TweetComments = ({ tweetId }) => {
   const [comments, setComments] = useState([]);
   const navigate = useNavigate();
+  // const { tweetId } = useParams();
 
   const fetchTweetComment = async () => {
     try {
