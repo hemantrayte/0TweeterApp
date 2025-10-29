@@ -102,6 +102,10 @@ const router = createBrowserRouter([
         element: <CreateComment />,
       },
       {
+        path: "comment/commentId",
+        element: <SingleComment />,
+      },
+      {
         path: "comment/update/:commentId",
         element: <UpdateComment />,
       },
