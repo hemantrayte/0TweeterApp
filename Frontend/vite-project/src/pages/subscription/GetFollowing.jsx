@@ -1,7 +1,11 @@
 import React from "react";
 
 const GetFollowing = () => {
-  return <div></div>;
+  return (
+    <div>
+      <h1>Get following</h1>
+    </div>
+  );
 };
 
 export default GetFollowing;
