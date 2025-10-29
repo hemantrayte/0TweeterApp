@@ -90,7 +90,7 @@ const getTweetComment = asyncHandler(async (req, res) => {
 
   // Get all comments for this tweet
   const comments = await Comment.find({ tweet: tweetId })
-    .populate("owner", "name avatar") // populate author info
+    .populate("owner", "username avatar") // populate author info
     .sort({ createdAt: -1 }); // latest comments first
 
   return res

@@ -97,7 +97,7 @@ const router = createBrowserRouter([
         element: <TweetComments />,
       },
       {
-        path: "comment/create",
+        path: "comment/create/:tweetId",
         element: <CreateComment />,
       },
       {

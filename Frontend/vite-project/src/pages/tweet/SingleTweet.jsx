@@ -109,7 +109,7 @@ const SingleTweet = () => {
             <FaRegHeart /> <span>23</span>
           </button>
         </div>
-        <TweetComments id={tweet._id} />
+        <TweetComments tweetId={tweet._id} />
 
         {/* ✅ Show buttons only if logged-in user is owner */}
         {isOwner && (
