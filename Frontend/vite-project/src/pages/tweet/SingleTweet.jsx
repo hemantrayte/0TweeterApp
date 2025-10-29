@@ -7,12 +7,25 @@ import {
   FaRetweet,
 } from "react-icons/fa";
 import api from "../../Api/api";
+import TweetComments from "../comments/TweetComments";
 
 const SingleTweet = () => {
   const { tweetId } = useParams();
   const navigate = useNavigate();
   const [tweet, setTweet] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
 
+  // ✅ Fetch logged-in user info
+  const fetchCurrentUser = async () => {
+    try {
+      const res = await api.get("/users/current-user"); // Adjust if your route differs
+      setCurrentUser(res.data.data);
+    } catch (error) {
+      console.log("Failed to fetch current user:", error);
+    }
+  };
+
+  // ✅ Fetch the tweet
   const fetchSingleTweet = async () => {
     try {
       const res = await api.get(`/tweets/id/${tweetId}`);
@@ -24,6 +37,7 @@ const SingleTweet = () => {
 
   useEffect(() => {
     fetchSingleTweet();
+    fetchCurrentUser();
   }, [tweetId]);
 
   if (!tweet) {
@@ -33,6 +47,9 @@ const SingleTweet = () => {
       </div>
     );
   }
+
+  // ✅ Check ownership
+  const isOwner = currentUser?._id === tweet?.owner?._id;
 
   return (
     <div className="bg-black min-h-screen text-gray-100 flex flex-col">
@@ -92,22 +109,25 @@ const SingleTweet = () => {
             <FaRegHeart /> <span>23</span>
           </button>
         </div>
+        <TweetComments id={tweet._id} />
 
-        {/* Action Buttons */}
-        <div className="flex gap-3 mt-5">
-          <Link
-            to={`/tweet/update/${tweet._id}`}
-            className="flex-1 text-center py-2 bg-[#1DA1F2] hover:bg-[#1991DA] rounded-full text-white font-semibold transition-all"
-          >
-            Update Tweet
-          </Link>
-          <Link
-            to={`/tweet/delete/${tweet._id}`}
-            className="flex-1 text-center py-2 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white rounded-full font-semibold transition-all"
-          >
-            Delete Tweet
-          </Link>
-        </div>
+        {/* ✅ Show buttons only if logged-in user is owner */}
+        {isOwner && (
+          <div className="flex gap-3 mt-5">
+            <Link
+              to={`/tweet/update/${tweet._id}`}
+              className="flex-1 text-center py-2 bg-[#1DA1F2] hover:bg-[#1991DA] rounded-full text-white font-semibold transition-all"
+            >
+              Update Tweet
+            </Link>
+            <Link
+              to={`/tweet/delete/${tweet._id}`}
+              className="flex-1 text-center py-2 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white rounded-full font-semibold transition-all"
+            >
+              Delete Tweet
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
