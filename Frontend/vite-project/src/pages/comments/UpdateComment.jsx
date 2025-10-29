@@ -20,7 +20,7 @@ const UpdateComment = () => {
       );
 
       console.log(res.data.data);
-      navigate(`/comment/c/${commentId}`);
+      navigate(-2);
     } catch (error) {
       console.log(error);
     }
