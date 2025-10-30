@@ -225,6 +225,44 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Avatar image updated successfully"));
 });
 
+const getUserProfile = asyncHandler(async (req, res) => {
+  const { username } = req.params;
+
+  if (!username) {
+    throw new ApiError(400, "Username is required");
+  }
+
+  // 1️⃣ Find the user by username (case-insensitive)
+  const user = await User.findOne({ username: username.toLowerCase() })
+    .select("-password")
+    .lean();
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  // 2️⃣ Find that user’s tweets and populate the tweet owner info
+  const tweets = await Tweet.find({ owner: user._id })
+    .populate("owner", "username avatar fullName") // populate user info for each tweet
+    .sort({ createdAt: -1 })
+    .lean();
+
+  // 3️⃣ Send combined response
+  res.status(200).json({
+    success: true,
+    user: {
+      _id: user._id,
+      username: user.username,
+      fullName: user.fullName,
+      avatar: user.avatar,
+      email: user.email,
+      bio: user.bio || "",
+      createdAt: user.createdAt,
+    },
+    tweets,
+  });
+});
+
 export {
   registerUser,
   loginUser,
@@ -233,4 +271,5 @@ export {
   changeCurrentPassword,
   updateUserDetails,
   updateUserAvatar,
+  getUserProfile,
 };
