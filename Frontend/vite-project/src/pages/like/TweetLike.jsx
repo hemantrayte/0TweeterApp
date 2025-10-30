@@ -6,24 +6,21 @@ const TweetLike = ({ tweetId }) => {
   const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
 
-  // const fetchTweetLike = async () => {
-  //   try {
-  //     const res = await api.get(`/likes/toggle/t/${tweetId}`);
-  //     const tweet = res.data.data;
-  //     setLikesCount(tweet?.likes?.length || 0);
-  //     setLiked(tweet?.isLikedByCurrentUser || false);
-  //   } catch (error) {
-  //     console.log("Error fetching tweet like data:", error);
-  //   }
-  // };
+  const fetchTweetLike = async () => {
+    try {
+      const res = await api.post(`/likes/toggle/t/${tweetId}`);
+      const tweet = res.data.data;
+      setLikesCount(tweet?.likes?.length || 0);
+      setLiked(tweet?.isLikedByCurrentUser || false);
+    } catch (error) {
+      console.log("Error fetching tweet like data:", error);
+    }
+  };
 
   const handleToggleLike = async () => {
     try {
       console.log("🟢 Sending like toggle request for tweet:", tweetId);
-      const res = await api.post(`/likes/toggle/t/${tweetId}`);
-      console.log("✅ Response:", res.data);
-      console.log("🟡 toggleTweetLike called");
-      console.log("Tweet ID:", tweetId);
+      await api.post(`/likes/toggle/t/${tweetId}`);
       setLiked(!liked);
       setLikesCount((prev) => (liked ? prev - 1 : prev + 1));
     } catch (error) {
@@ -32,7 +29,7 @@ const TweetLike = ({ tweetId }) => {
   };
 
   useEffect(() => {
-    // fetchTweetLike();
+    fetchTweetLike();
   }, [tweetId]);
 
   return (

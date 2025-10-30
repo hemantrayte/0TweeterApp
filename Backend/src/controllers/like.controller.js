@@ -38,10 +38,6 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
 
 const toggleTweetLike = asyncHandler(async (req, res) => {
   try {
-    console.log("🔹 Toggle Like Request received");
-    console.log("🔹 Tweet ID:", req.params.tweetId);
-    console.log("🔹 User:", req.user?._id);
-
     const { tweetId } = req.params;
     const userId = req.user?._id;
 
@@ -52,7 +48,6 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
       tweet: tweetId,
       likedBy: userId,
     });
-    console.log("🔹 Existing Like:", existingLike);
 
     if (existingLike) {
       await existingLike.deleteOne();
