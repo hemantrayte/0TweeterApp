@@ -10,6 +10,7 @@ import {
 const router = Router();
 
 router.route("/follow/:userId").post(VerifyJwt, followUser);
+
 router.route("/unfollow/:userId").delete(VerifyJwt, unfollowUser);
 router.route("/followers/:userId").get(getFollowers);
 router.route("/following/:userId").get(getFollowing);

@@ -27,6 +27,10 @@ import UpdateComment from "./pages/comments/UpdateComment.jsx";
 import TweetComments from "./pages/comments/TweetComments.jsx";
 import DeleteComment from "./pages/comments/DeleteComment.jsx";
 import SingleComment from "./pages/comments/SingleComment.jsx";
+import FollowUser from "./pages/subscription/FollowUser.jsx";
+import UnfollowUser from "./pages/subscription/UnfollowUser.jsx";
+import GetFollowers from "./pages/subscription/GetFollowers.jsx";
+import GetFollowing from "./pages/subscription/GetFollowing.jsx";
 
 const router = createBrowserRouter([
   {
@@ -112,6 +116,24 @@ const router = createBrowserRouter([
       {
         path: "comment/delete/:commentId",
         element: <DeleteComment />,
+      },
+
+      //follow routes
+      {
+        path: "follow/:userId",
+        element: <FollowUser />,
+      },
+      {
+        path: "unfollow/:userId",
+        element: <UnfollowUser />,
+      },
+      {
+        path: "follower/:userId",
+        element: <GetFollowers />,
+      },
+      {
+        path: "following/:userId",
+        element: <GetFollowing />,
       },
     ],
   },
