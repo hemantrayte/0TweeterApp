@@ -31,6 +31,9 @@ import FollowUser from "./pages/subscription/FollowUser.jsx";
 import UnfollowUser from "./pages/subscription/UnfollowUser.jsx";
 import GetFollowers from "./pages/subscription/GetFollowers.jsx";
 import GetFollowing from "./pages/subscription/GetFollowing.jsx";
+import TweetLike from "./pages/like/TweetLike.jsx";
+import CommentLike from "./pages/like/CommentLike.jsx";
+import GetLikedTweets from "./pages/like/GetLikeTweet.jsx";
 
 const router = createBrowserRouter([
   {
@@ -134,6 +137,20 @@ const router = createBrowserRouter([
       {
         path: "following/:userId",
         element: <GetFollowing />,
+      },
+
+      //like route
+      {
+        path: "like/tweet/:tweetId",
+        element: <TweetLike />,
+      },
+      {
+        path: "like/comment/:commentId",
+        element: <CommentLike />,
+      },
+      {
+        path: "like/tweet",
+        element: <GetLikedTweets />,
       },
     ],
   },
