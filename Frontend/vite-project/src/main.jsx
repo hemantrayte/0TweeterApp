@@ -34,6 +34,7 @@ import GetFollowing from "./pages/subscription/GetFollowing.jsx";
 import TweetLike from "./pages/like/TweetLike.jsx";
 import CommentLike from "./pages/like/CommentLike.jsx";
 import GetLikedTweets from "./pages/like/GetLikeTweet.jsx";
+import UserProfile from "./pages/user/UserProfile.jsx";
 
 const router = createBrowserRouter([
   {
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
       {
         path: "user/update/password",
         element: <ChangePassword />,
+      },
+      {
+        path: "user/:userId",
+        element: <UserProfile />,
       },
 
       //tweets routes
