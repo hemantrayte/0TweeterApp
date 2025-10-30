@@ -8,6 +8,8 @@ import {
 } from "react-icons/fa";
 import api from "../../Api/api";
 import TweetComments from "../comments/TweetComments";
+import CommentLike from "../like/CommentLike";
+import TweetLike from "../like/TweetLike";
 
 const SingleTweet = () => {
   const { tweetId } = useParams();
@@ -105,9 +107,9 @@ const SingleTweet = () => {
           <button className="hover:text-green-500 transition-colors flex items-center gap-2">
             <FaRetweet /> <span>4</span>
           </button>
-          <button className="hover:text-red-500 transition-colors flex items-center gap-2">
-            <FaRegHeart /> <span>23</span>
-          </button>
+          <div className="hover:text-red-500 transition-colors flex items-center gap-2">
+            <TweetLike tweetId={tweet._id} />
+          </div>
         </div>
         <TweetComments tweetId={tweet._id} />
 

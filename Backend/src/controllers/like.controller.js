@@ -1,6 +1,7 @@
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Like } from "../models/like.model.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 
 const toggleCommentLike = asyncHandler(async (req, res) => {
   const { commentId } = req.params;
@@ -36,30 +37,37 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
 });
 
 const toggleTweetLike = asyncHandler(async (req, res) => {
-  const { tweetId } = req.params;
-  const userId = req.user?._id;
+  try {
+    console.log("🔹 Toggle Like Request received");
+    console.log("🔹 Tweet ID:", req.params.tweetId);
+    console.log("🔹 User:", req.user?._id);
 
-  if (!tweetId) {
-    throw new ApiError(404, "tweet not found");
-  }
+    const { tweetId } = req.params;
+    const userId = req.user?._id;
 
-  const existingLike = await Like.findOne({
-    tweet: tweetId,
-    likedBy: userId,
-  });
+    if (!tweetId) throw new ApiError(404, "Tweet ID missing");
+    if (!userId) throw new ApiError(401, "User not authenticated");
 
-  if (existingLike) {
-    await existingLike.deleteOne();
-    return res.status(200).json(new ApiResponse(200, "Tweet Like removed"));
-  } else {
-    const newLike = await Like.create({
+    const existingLike = await Like.findOne({
       tweet: tweetId,
       likedBy: userId,
     });
+    console.log("🔹 Existing Like:", existingLike);
+
+    if (existingLike) {
+      await existingLike.deleteOne();
+      return res.status(200).json(new ApiResponse(200, "Tweet Like removed"));
+    }
+
+    const newLike = await Like.create({ tweet: tweetId, likedBy: userId });
+    console.log("✅ New Like created:", newLike);
 
     return res
       .status(200)
       .json(new ApiResponse(200, { like: newLike }, "Tweet Liked"));
+  } catch (error) {
+    console.error("❌ Error in toggleTweetLike:", error);
+    throw error; // Let asyncHandler handle it
   }
 });
 

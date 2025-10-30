@@ -1,30 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Heart } from "lucide-react";
-import { useParams } from "react-router-dom";
 import api from "../../Api/api";
 
-const TweetLike = () => {
-  const { tweetId } = useParams();
+const TweetLike = ({ tweetId }) => {
   const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
 
-  // Fetch tweet like data (optional)
-  const fetchTweetLike = async () => {
-    try {
-      const res = await api.get(`/tweets/id/${tweetId}`);
-      const tweet = res.data.data;
+  // const fetchTweetLike = async () => {
+  //   try {
+  //     const res = await api.get(`/likes/toggle/t/${tweetId}`);
+  //     const tweet = res.data.data;
+  //     setLikesCount(tweet?.likes?.length || 0);
+  //     setLiked(tweet?.isLikedByCurrentUser || false);
+  //   } catch (error) {
+  //     console.log("Error fetching tweet like data:", error);
+  //   }
+  // };
 
-      setLikesCount(tweet?.likes?.length || 0);
-      setLiked(tweet?.isLikedByCurrentUser || false);
-    } catch (error) {
-      console.log("Error fetching tweet like data:", error);
-    }
-  };
-
-  // Toggle like/unlike
   const handleToggleLike = async () => {
     try {
-      await api.post(`/tweets/toggle/t/${tweetId}`);
+      console.log("🟢 Sending like toggle request for tweet:", tweetId);
+      const res = await api.post(`/likes/toggle/t/${tweetId}`);
+      console.log("✅ Response:", res.data);
+      console.log("🟡 toggleTweetLike called");
+      console.log("Tweet ID:", tweetId);
       setLiked(!liked);
       setLikesCount((prev) => (liked ? prev - 1 : prev + 1));
     } catch (error) {
@@ -33,7 +32,7 @@ const TweetLike = () => {
   };
 
   useEffect(() => {
-    fetchTweetLike();
+    // fetchTweetLike();
   }, [tweetId]);
 
   return (
