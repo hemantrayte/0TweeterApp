@@ -1,30 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { Heart } from "lucide-react";
 import api from "../../Api/api";
 
-const CommentLike = () => {
-  const { commentId } = useParams();
+const CommentLike = ({ commentId }) => {
+  // const { commentId } = useParams();
   const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
 
-  // Fetch current like status & count (optional if backend supports)
-  const fetchCommentLike = async () => {
-    try {
-      const res = await api.get(`/comments/c/${commentId}`);
-      // Assuming your comment model returns likes array or count
-      setLikesCount(res.data.data.likes?.length || 0);
-      // Check if current user liked
-      setLiked(res.data.data.isLikedByCurrentUser || false);
-    } catch (error) {
-      console.log("Error fetching comment like status:", error);
-    }
-  };
+  // // Fetch current like status & count (optional if backend supports)
+  // const fetchCommentLike = async () => {
+  //   try {
+  //     const res = await api.get(`/comments/c/${commentId}`);
+  //     // Assuming your comment model returns likes array or count
+  //     setLikesCount(res.data.data.likes?.length || 0);
+  //     // Check if current user liked
+  //     setLiked(res.data.data.isLikedByCurrentUser || false);
+  //   } catch (error) {
+  //     console.log("Error fetching comment like status:", error);
+  //   }
+  // };
 
   // Toggle like
   const handleToggleLike = async () => {
     try {
-      await api.post(`/comments/toggle/c/${commentId}`);
+      await api.post(`/likes/toggle/c/${commentId}`);
       setLiked(!liked);
       setLikesCount((prev) => (liked ? prev - 1 : prev + 1));
     } catch (error) {
@@ -33,7 +33,7 @@ const CommentLike = () => {
   };
 
   useEffect(() => {
-    fetchCommentLike();
+    // fetchCommentLike();
   }, []);
 
   return (

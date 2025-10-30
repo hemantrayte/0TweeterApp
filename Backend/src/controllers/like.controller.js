@@ -11,7 +11,7 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
     throw new ApiError(404, "coment not found");
   }
 
-  const existingLike = await getLikedTweets.findOne({
+  const existingLike = await Like.findOne({
     comment: commentId,
     likedBy: userId,
   });

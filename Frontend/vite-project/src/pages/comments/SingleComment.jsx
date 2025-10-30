@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../../Api/api";
 import { Link, useParams } from "react-router-dom";
+import CommentLike from "../like/CommentLike";
 
 const SingleComment = () => {
   const { commentId } = useParams();
@@ -57,6 +58,9 @@ const SingleComment = () => {
             <p className="text-gray-500 text-sm">
               {new Date(comment.createdAt).toLocaleString()}
             </p>
+          </div>
+          <div>
+            <CommentLike commentId={comment._id} />
           </div>
         </div>
 
