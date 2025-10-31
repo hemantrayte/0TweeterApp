@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
       index: true,
     },
     avatar: {
-      type: String, // cloudinary url
+      type: String, // Cloudinary URL
       required: true,
     },
     password: {
@@ -35,13 +35,22 @@ const userSchema = new mongoose.Schema(
     refreshToken: {
       type: String,
     },
+
+    // 🟢 New fields for follower/following counts
+    followersCount: {
+      type: Number,
+      default: 0,
+    },
+    followingCount: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
-
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });

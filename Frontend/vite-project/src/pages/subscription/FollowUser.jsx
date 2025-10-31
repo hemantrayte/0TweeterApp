@@ -20,9 +20,21 @@ const FollowUser = ({ userId }) => {
 
   const handleFollowToggle = async () => {
     try {
-      const res = await api.post(`/subscription/follow/${userId}`);
-      setIsFollowing(!isFollowing);
-      console.log(res.data);
+      if (isFollowing) {
+        await api.delete(`/subscription/unfollow/${user._id}`);
+        setIsFollowing(false);
+        setUser({
+          ...user,
+          followersCount: user.followersCount - 1,
+        });
+      } else {
+        await api.post(`/subscription/follow/${user._id}`);
+        setIsFollowing(true);
+        setUser({
+          ...user,
+          followersCount: user.followersCount + 1,
+        });
+      }
     } catch (error) {
       console.log("Error following user:", error);
     }
