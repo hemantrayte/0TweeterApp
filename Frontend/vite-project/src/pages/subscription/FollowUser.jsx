@@ -2,16 +2,17 @@ import React, { useEffect, useState } from "react";
 import api from "../../Api/api";
 import { useParams } from "react-router-dom";
 
-const FollowUser = () => {
-  const { userId } = useParams();
+const FollowUser = ({ userId }) => {
+  const { username } = useParams();
   const [user, setUser] = useState(null);
   const [isFollowing, setIsFollowing] = useState(false);
 
   const fetchUser = async () => {
     try {
-      const res = await api.get(`/users/${userId}`);
-      setUser(res.data.data);
-      setIsFollowing(res.data.data.isFollowing || false);
+      const res = await api.get(`/users/${username}`);
+      const userData = res.data?.user || {}; // ✅ fixed
+      setUser(userData);
+      setIsFollowing(userData.isFollowing || false);
     } catch (error) {
       console.log("Error fetching user:", error);
     }
@@ -19,7 +20,7 @@ const FollowUser = () => {
 
   const handleFollowToggle = async () => {
     try {
-      const res = await api.post(`/follow/${userId}`);
+      const res = await api.post(`/subscription/follow/${userId}`);
       setIsFollowing(!isFollowing);
       console.log(res.data);
     } catch (error) {
@@ -31,7 +32,7 @@ const FollowUser = () => {
     fetchUser();
   }, [userId]);
 
-  if (!user) {
+  if (!user || !user.username) {
     return (
       <div className="flex items-center justify-center h-screen bg-black text-gray-400">
         Loading user...
@@ -41,7 +42,6 @@ const FollowUser = () => {
 
   return (
     <div className="bg-black min-h-screen text-gray-100 flex flex-col items-center py-10">
-      {/* User Card */}
       <div className="max-w-md w-full bg-[#16181C] border border-gray-800 rounded-2xl shadow-md p-6 flex flex-col items-center">
         <img
           src={
@@ -70,7 +70,6 @@ const FollowUser = () => {
           </span>
         </div>
 
-        {/* Follow / Unfollow Button */}
         <button
           onClick={handleFollowToggle}
           className={`mt-6 px-6 py-2 rounded-full font-semibold transition-all ${

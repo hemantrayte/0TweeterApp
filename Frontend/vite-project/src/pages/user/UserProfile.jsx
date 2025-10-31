@@ -8,6 +8,8 @@ import {
   FaRetweet,
   FaShare,
 } from "react-icons/fa";
+import FollowUser from "../subscription/FollowUser";
+import UnfollowUser from "../subscription/UnfollowUser";
 
 const UserProfile = () => {
   const { username } = useParams();
@@ -70,6 +72,7 @@ const UserProfile = () => {
           <p className="text-gray-500 text-sm mt-2">
             Joined {new Date(userData.createdAt).toLocaleDateString()}
           </p>
+          <FollowUser userId={userData._id} />
         </div>
 
         {/* Tweets */}

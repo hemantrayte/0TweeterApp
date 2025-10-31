@@ -228,12 +228,12 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
 
 const getUserProfile = asyncHandler(async (req, res) => {
   const { username } = req.params;
+  const loggedInUserId = req.user?._id; // current logged-in user
 
   if (!username) {
     throw new ApiError(400, "Username is required");
   }
 
-  // 1️⃣ Find the user by username (case-insensitive)
   const user = await User.findOne({ username: username.toLowerCase() })
     .select("-password")
     .lean();
@@ -242,13 +242,21 @@ const getUserProfile = asyncHandler(async (req, res) => {
     throw new ApiError(404, "User not found");
   }
 
-  // 2️⃣ Find that user’s tweets and populate the tweet owner info
   const tweets = await Tweet.find({ owner: user._id })
-    .populate("owner", "username avatar fullName") // populate user info for each tweet
+    .populate("owner", "username avatar fullName")
     .sort({ createdAt: -1 })
     .lean();
 
-  // 3️⃣ Send combined response
+  // check if logged-in user follows this profile
+  let isFollowing = false;
+  if (loggedInUserId) {
+    const follow = await Follow.findOne({
+      follower: loggedInUserId,
+      profile: user._id,
+    });
+    isFollowing = !!follow;
+  }
+
   res.status(200).json({
     success: true,
     user: {
@@ -259,6 +267,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       email: user.email,
       bio: user.bio || "",
       createdAt: user.createdAt,
+      isFollowing,
     },
     tweets,
   });
