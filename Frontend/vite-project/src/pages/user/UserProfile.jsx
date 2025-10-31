@@ -72,7 +72,6 @@ const UserProfile = () => {
           <p className="text-gray-500 text-sm mt-2">
             Joined {new Date(userData.createdAt).toLocaleDateString()}
           </p>
-
           <FollowUser userId={userData._id} />
         </div>
 

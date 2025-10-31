@@ -12,6 +12,7 @@ const FollowUser = ({ userId }) => {
       const res = await api.get(`/users/${username}`);
       const userData = res.data?.user || {}; // ✅ fixed
       setUser(userData);
+      console.log(userData);
       setIsFollowing(userData.isFollowing || false);
     } catch (error) {
       console.log("Error fetching user:", error);

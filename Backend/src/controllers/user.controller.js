@@ -4,6 +4,7 @@ import { User } from "../models/user.model.js";
 import { Tweet } from "../models/tweet.model.js";
 import { uploadOnCloudinary } from "../utils/cloundinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { Subscription } from "../models/followers.model.js";
 
 const generateAccessAndRefresTokens = async (userId) => {
   try {
@@ -242,15 +243,14 @@ const getUserProfile = asyncHandler(async (req, res) => {
     throw new ApiError(404, "User not found");
   }
 
-  const tweets = await Tweet.find({ owner: user._id })
-    .populate("owner", "username avatar fullName")
-    .sort({ createdAt: -1 })
-    .lean();
+  const tweets = await Tweet.find({ owner: user._id }).select(
+    "username fullName avatar email bio followersCount followingCount createdAt"
+  );
 
   // check if logged-in user follows this profile
   let isFollowing = false;
   if (loggedInUserId) {
-    const follow = await Follow.findOne({
+    const follow = await Subscription.findOne({
       follower: loggedInUserId,
       profile: user._id,
     });
