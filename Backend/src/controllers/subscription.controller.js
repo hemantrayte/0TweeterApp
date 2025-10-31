@@ -47,9 +47,6 @@ const unfollowUser = asyncHandler(async (req, res) => {
   const followerId = req.user?._id;
   const { userId } = req.params;
 
-  if (!followerId) throw new ApiError(401, "Unauthorized");
-  if (!userId) throw new ApiError(400, "User ID is required");
-
   const existingFollow = await Subscription.findOneAndDelete({
     follower: followerId,
     profile: userId,
@@ -59,9 +56,13 @@ const unfollowUser = asyncHandler(async (req, res) => {
     throw new ApiError(400, "You are not following this user");
   }
 
+  // ✅ Decrease counts
+  await User.findByIdAndUpdate(followerId, { $inc: { followingCount: -1 } });
+  await User.findByIdAndUpdate(userId, { $inc: { followersCount: -1 } });
+
   return res
     .status(200)
-    .json(new ApiResponse(200, {}, "User unfollowed successfully"));
+    .json(new ApiResponse(200, "User unfollowed successfully"));
 });
 
 // 🧍 Get followers of a user
