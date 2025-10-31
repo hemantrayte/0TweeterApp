@@ -243,9 +243,10 @@ const getUserProfile = asyncHandler(async (req, res) => {
     throw new ApiError(404, "User not found");
   }
 
-  const tweets = await Tweet.find({ owner: user._id }).select(
-    "username fullName avatar email bio followersCount followingCount createdAt"
-  );
+  const tweets = await Tweet.find({ owner: user._id })
+    .populate("owner", "username avatar fullName")
+    .sort({ createdAt: -1 })
+    .lean();
 
   // check if logged-in user follows this profile
   let isFollowing = false;
